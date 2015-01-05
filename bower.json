@@ -1,6 +1,6 @@
 {
-  "name": "workshop-threejs-starter",
-  "version": "0.0.1",
+  "name": "threejs-starter",
+  "version": "0.0.2",
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -11,7 +11,6 @@
   ],
   "devDependencies": {
     "greensock": "~1.14.1",
-    "jquery": "~2.1.1",
     "threejs": "*",
     "dat-gui": "~0.5.0"
   }
