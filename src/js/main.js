@@ -1,15 +1,15 @@
 var webgl, gui;
 
-$(document).ready(init);
+window.onload = init;
 
 function init(){
     webgl = new Webgl(window.innerWidth, window.innerHeight);
-    $('.three').append(webgl.renderer.domElement);
+    document.querySelector('.three').appendChild(webgl.renderer.domElement);
 
     gui = new dat.GUI();
     gui.close();
 
-    $(window).on('resize', resizeHandler);
+    window.onresize = resizeHandler;
 
     animate();
 }
