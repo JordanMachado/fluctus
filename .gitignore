@@ -1,5 +1,4 @@
 .DS_Store
-
-build
+build/main.js
 node_modules
-assets/lib
+*.log
