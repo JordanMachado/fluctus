@@ -1,11 +1,13 @@
-'use strict';
-
-import Cube from './objects/Cube';
 import THREE from 'three';
 window.THREE = THREE;
+import Cube from './objects/Cube';
 
 export default class Webgl {
   constructor(width, height) {
+    this.params = {
+      usePostprocessing: false,
+    };
+
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000);
@@ -15,9 +17,7 @@ export default class Webgl {
     this.renderer.setSize(width, height);
     this.renderer.setClearColor(0x262626);
 
-    this.usePostprocessing = true;
-    this.composer = new WAGNER.Composer(this.renderer);
-    this.composer.setSize(width, height);
+    this.composer = null;
     this.initPostprocessing();
 
     this.cube = new Cube();
@@ -26,30 +26,26 @@ export default class Webgl {
   }
 
   initPostprocessing() {
-    if (!this.usePostprocessing) return;
+    if (!this.params.usePostprocessing) { return; }
 
-    this.vignette2Pass = new WAGNER.Vignette2Pass();
+    /* Add the effect composer of your choice */
   }
 
   resize(width, height) {
-    this.composer.setSize(width, height);
+    if (this.composer) {
+      this.composer.setSize(width, height);
+    }
 
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
-  };
+  }
 
   render() {
-    if (this.usePostprocessing) {
-      this.composer.reset();
-      this.composer.renderer.clear();
-      this.composer.render(this.scene, this.camera);
-      this.composer.pass(this.vignette2Pass);
-      this.composer.toScreen();
+    if (this.params.usePostprocessing) {
+      console.warn('WebGL - No effect composer set.');
     } else {
-      this.renderer.autoClear = false;
-      this.renderer.clear();
       this.renderer.render(this.scene, this.camera);
     }
 

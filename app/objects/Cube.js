@@ -1,5 +1,3 @@
-'use strict';
-
 import THREE from 'three';
 
 export default class Cube extends THREE.Object3D {
@@ -9,7 +7,7 @@ export default class Cube extends THREE.Object3D {
     this.geom = new THREE.BoxGeometry(10, 10, 10);
     this.mat = new THREE.MeshBasicMaterial({
       color: 0x00ff00,
-      wireframe: true
+      wireframe: true,
     });
     this.mesh = new THREE.Mesh(this.geom, this.mat);
 

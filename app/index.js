@@ -1,6 +1,3 @@
-'use strict';
-
-import domready from 'domready';
 import Webgl from './Webgl';
 import raf from 'raf';
 import dat from 'dat-gui';
@@ -9,21 +6,19 @@ import 'gsap';
 let webgl;
 let gui;
 
-domready(() => {
-  // webgl settings
-  webgl = new Webgl(window.innerWidth, window.innerHeight);
-  document.body.appendChild(webgl.renderer.domElement);
+// webgl settings
+webgl = new Webgl(window.innerWidth, window.innerHeight);
+document.body.appendChild(webgl.renderer.domElement);
 
-  // GUI settings
-  gui = new dat.GUI();
-  gui.add(webgl, 'usePostprocessing');
+// GUI settings
+gui = new dat.GUI();
+gui.add(webgl.params, 'usePostprocessing');
 
-  // handle resize
-  window.onresize = resizeHandler;
+// handle resize
+window.addEventListener('resize', resizeHandler);
 
-  // let's play !
-  animate();
-});
+// let's play !
+animate();
 
 function resizeHandler() {
   webgl.resize(window.innerWidth, window.innerHeight);
