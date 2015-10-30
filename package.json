@@ -21,6 +21,8 @@
     "three": "*"
   },
   "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "*",
+    "babel-preset-es2015": "*",
     "babelify": "*",
     "browserify": "*",
     "budo": "*",
