@@ -182,7 +182,7 @@ export default class Webgl {
           this.data[i] = data.freq[i]/256.;
         }
         console.log(this.volume);
-        if(data.acuteAverage>60) {
+        if(data.acuteAverage>70) {
           this.planeAudio.toogleWireframe()
         }
         console.log(data.acuteAverage);
