@@ -11,7 +11,6 @@ window.gui = gui;
 
 // webgl settings
 webgl = new Webgl(window.innerWidth, window.innerHeight);
-webgl.analyser.load('medias/Veens-Girl.mp3');
 
 document.body.appendChild(webgl.renderer.domElement);
 
@@ -22,12 +21,16 @@ gui.add(webgl.params, 'usePostprocessing');
 // handle resize
 window.addEventListener('resize', resizeHandler);
 window.addEventListener('mousemove', mouseMoveHandler);
+webgl.analyser.load('medias/Veens-Girl.mp3');
+webgl.quadNoise.updateTimeScale(0.1);
 
 
 let start_btn = document.querySelector('.start');
-start_btn.onclick = ()=> {
-  console.log('start');
-}
+// start_btn.onclick = ()=> {
+//   console.log('start');
+//   webgl.analyser.load('medias/Veens-Girl.mp3');
+//   webgl.quadNoise.updateTimeScale(0.1);
+// }
 
 // let's play !
 animate();

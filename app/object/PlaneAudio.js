@@ -58,7 +58,7 @@ export default class Plane extends THREE.Object3D {
       fragmentShader:fragmentShader,
       uniforms: this.uniforms,
       side:THREE.DoubleSide,
-      wireframe:true
+      wireframe:false
     });
     this.mesh = new THREE.Mesh(this.geom, this.mat);
     this.mesh.rotation.x = Math.PI/180 * 110;
@@ -91,6 +91,9 @@ export default class Plane extends THREE.Object3D {
         .onFinishChange(()=>{
           this.uniforms.elevationScale.value = this.elevationScale;
         });
+  }
+  toogleWireframe() {
+    this.mesh.material.wireframe = !this.mesh.material.wireframe 
   }
 
 

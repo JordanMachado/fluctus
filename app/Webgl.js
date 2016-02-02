@@ -158,6 +158,7 @@ export default class Webgl {
         this.composer.render(this.scene, this.camera);
 
         this.composer.pass(this.displacementPass);
+
         this.composer.pass(this.lutPass);
         this.composer.pass(this.vignettePass);
 
@@ -180,6 +181,11 @@ export default class Webgl {
       for (var i = 0; i < data.freq.length; i++) {
           this.data[i] = data.freq[i]/256.;
         }
+        console.log(this.volume);
+        if(data.acuteAverage>60) {
+          this.planeAudio.toogleWireframe()
+        }
+        console.log(data.acuteAverage);
         this.volume = data.volume;
         this.textureData.needsUpdate = true;
     }
