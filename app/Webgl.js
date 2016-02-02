@@ -24,25 +24,32 @@ export default class Webgl {
       y:0
     }
 
+
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000000);
-    this.camera.position.z = 500;
+    this.camera.position.z = 220;
+
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(width, height);
     this.renderer.setClearColor(0xe7e0ff);
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMapSoft = true;
 
     this.composer = null;
+
     this.initGui();
     this.initPostprocessing();
+    this.createAudioTexture();
+    this.addObjects(width,height);
 
 
+
+
+  }
+  createAudioTexture(){
     let size = 16;
-    // create scene with planeAudio + blend pass for displacement map only on planeAudio
-    // copie paste from https://github.com/vdaguenet/nocturne/commit/ac68bb9ef6944a7218b6969eaa42908de24ab0f6
-
     this.data = new Float32Array(size * size *3);
     this.volume = 1;
-    // console.log(this.data.length);
 
     for (let i = 0,  l = this.data.length; i < l; i += 3) {
         this.data[i] =.0;
@@ -52,13 +59,11 @@ export default class Webgl {
 
     let _size = 2048
     this.analyser = new AudioAnalyser(_size);
-    this.analyser.load('medias/Veens-Girl.mp3');
+
     this.textureData = new THREE.DataTexture(this.data, size, size, THREE.RGBFormat, THREE.FloatType);
     this.textureData.minFilter = this.textureData.magFilter = THREE.NearestFilter;
-
-
-
-    this.camera.position.z = 220;
+  }
+  addObjects(width,height) {
     this.sceneRt = new THREE.Scene();
     this.cameraRt = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -10000, 10000 );
     this.rendererRt = new THREE.WebGLRenderer();
@@ -80,25 +85,13 @@ export default class Webgl {
 
     this.spotLight = new THREE.SpotLight( 0xffffff );
     this.spotLight.position.set( 0, 1000, 0 );
-
     this.spotLight.castShadow = true;
-
     this.spotLight.shadowMapWidth = 1024;
     this.spotLight.shadowMapHeight = 1024;
-
-    this.spotLight.shadowCameraNear = 50;
-    this.spotLight.shadowCameraFar = 40000;
-    this.spotLight.shadowCameraFov = 40;
-    this.spotLight.shadowDarkness = 0.5;
-
-
+    this.spotLight.shadowDarkness = 0.4;
     this.scene.add( this.spotLight );
-
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMapSoft = true;
-
-
   }
+
   initGui() {
 
     this.params = {
@@ -115,6 +108,7 @@ export default class Webgl {
     this.composer = new WAGNER.Composer(this.renderer);
     this.composer.setSize(window.innerWidth, window.innerHeight);
     window.composer = this.composer;
+
     this.vignettePass = new VignettePass();
     this.vignettePass.params.boost = 1.2;
     this.vignettePass.params.reduction = 0.26;
@@ -123,7 +117,8 @@ export default class Webgl {
 
     this.displacementPass = new DisplacementPass();
     this.displacementPass.params.amount = 0.0099;
-      this.lutPass = new LutPass();
+
+    this.lutPass = new LutPass();
 
     this.folder.add(this.displacementPass.params,'amount').min(0.001).max(0.05)
 
@@ -135,6 +130,7 @@ export default class Webgl {
       textureDisplacement.wrapS = textureDisplacement.wrapT = THREE.RepeatWrapping;
       this.displacementPass.params.uDisplacement = textureDisplacement;
     });
+
     loader.load('images/lookup_blue.png',(texture)=> {
       let lookup =texture
       lookup.minFilter = lookup.magFilter = THREE.LinearFilter;
@@ -146,7 +142,6 @@ export default class Webgl {
       if (this.composer) {
           this.composer.setSize(width, height);
       }
-
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
 
@@ -159,14 +154,12 @@ export default class Webgl {
   render() {
 
     if (this.params.usePostprocessing) {
-
         this.composer.reset();
         this.composer.render(this.scene, this.camera);
 
         this.composer.pass(this.displacementPass);
         this.composer.pass(this.lutPass);
         this.composer.pass(this.vignettePass);
-
 
         this.composer.toScreen();
 
@@ -180,18 +173,15 @@ export default class Webgl {
 
 
     this.rendererRt.render( this.sceneRt, this.cameraRt);
-
-    //render scene into rtTexture
     this.renderer.render( this.sceneRt, this.cameraRt, this.rtTexture, true );
 
     if(this.analyser.ready) {
       let data = this.analyser.getData()
       for (var i = 0; i < data.freq.length; i++) {
-        this.data[i] = data.freq[i]/256.;
-      }
-      this.volume = data.volume;
-      this.textureData.needsUpdate = true;
-
+          this.data[i] = data.freq[i]/256.;
+        }
+        this.volume = data.volume;
+        this.textureData.needsUpdate = true;
     }
 
     this.quadNoise.update();
@@ -200,7 +190,6 @@ export default class Webgl {
   }
 
   destroy() {
-    super.destroy();
-    gui.removeFolder(this.params.name)
+    gui.removeFolder(this.params.name);
   }
 }

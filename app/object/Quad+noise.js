@@ -7,7 +7,7 @@ export default class HeightMap extends THREE.Object3D {
     this.startTime = Date.now();
     this.time = 0.0;
     this.timeScale = 0.1;
-    this.repeat = 1.0;
+    this.repeat = 1.3;
 
 
 

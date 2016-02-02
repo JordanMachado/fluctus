@@ -11,6 +11,8 @@ window.gui = gui;
 
 // webgl settings
 webgl = new Webgl(window.innerWidth, window.innerHeight);
+webgl.analyser.load('medias/Veens-Girl.mp3');
+
 document.body.appendChild(webgl.renderer.domElement);
 
 // GUI settings
@@ -20,6 +22,12 @@ gui.add(webgl.params, 'usePostprocessing');
 // handle resize
 window.addEventListener('resize', resizeHandler);
 window.addEventListener('mousemove', mouseMoveHandler);
+
+
+let start_btn = document.querySelector('.start');
+start_btn.onclick = ()=> {
+  console.log('start');
+}
 
 // let's play !
 animate();
