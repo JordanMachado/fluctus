@@ -17,7 +17,7 @@ var LutPass = require('@superguigui/wagner/src/passes/lookup/lookup');
 const glslify = require('glslify');
 
 export default class Webgl {
-  constructor(width, height) {
+  constructor(width, height, canvas) {
 
     this.mouse ={
       x:0,
@@ -29,7 +29,7 @@ export default class Webgl {
     this.camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000000);
     this.camera.position.z = 220;
 
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer(canvas);
     this.renderer.setSize(width, height);
     this.renderer.setClearColor(0xe7e0ff);
     this.renderer.shadowMap.enabled = true;
@@ -158,6 +158,7 @@ export default class Webgl {
         this.composer.render(this.scene, this.camera);
 
         this.composer.pass(this.displacementPass);
+
         this.composer.pass(this.lutPass);
         this.composer.pass(this.vignettePass);
 
@@ -180,6 +181,11 @@ export default class Webgl {
       for (var i = 0; i < data.freq.length; i++) {
           this.data[i] = data.freq[i]/256.;
         }
+        // console.log(this.volume);
+        if(data.acuteAverage>60) {
+          this.planeAudio.toogleWireframe()
+        }
+        // console.log(data.acuteAverage);
         this.volume = data.volume;
         this.textureData.needsUpdate = true;
     }

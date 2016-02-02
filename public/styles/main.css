@@ -44,6 +44,7 @@ canvas,
   bottom: 0;
   width: 100vw;
   height: 100vh;
+  opacity: 0;
 }
 
 .main {
@@ -71,7 +72,7 @@ canvas,
 
 .title__content {
   display: inline-block;
-  transition: transform 550ms ease-out, opacity 550ms ease-out;
+  /*transition: transform 550ms ease-out, opacity 550ms ease-out;*/
 }
 
 .twitter {
@@ -115,7 +116,7 @@ svg {
   left: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  transition: transform 750ms ease-out, opacity 550ms ease-out;
+  /*transition: transform 750ms ease-out, opacity 550ms ease-out;*/
 
 }
 
@@ -125,17 +126,17 @@ svg text {
 }
 
 svg .circle--first {
-  transition: stroke-dashoffset 550ms ease-in-out;
+  /*transition: stroke-dashoffset 550ms ease-in-out;*/
 }
 
 svg .circle--second {
-  transition: stroke-dashoffset 550ms ease-in-out 150ms;
+  /*transition: stroke-dashoffset 550ms ease-in-out 150ms;*/
 }
 
 svg rect {
   transition: transform 450ms ease-in;
 }
-
+/*
 svg:hover {
   cursor: pointer;
 }
@@ -155,10 +156,4 @@ svg:hover text {
 svg:hover + .title > .title__content {
   transform: translate(100%, 0) scaleX(0.5);
   opacity: 0;
-}
-
-@keyframes draw {
-  50% {
-    stroke-dashoffset: 470px;
-  }
-}
+}*/
