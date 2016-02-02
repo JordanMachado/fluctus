@@ -15,10 +15,14 @@
   "author": "Valentin Daguenet <valentin.daguenet@gmail.com> (http://vdaguenet.fr)",
   "license": "MIT",
   "dependencies": {
+    "@superguigui/wagner": "^0.1.15",
     "dat-gui": "*",
+    "event-emitter": "^0.3.4",
+    "glsl-noise": "0.0.0",
+    "glslify": "^5.0.2",
     "gsap": "*",
     "raf": "*",
-    "three": "*"
+    "three": "^0.73.2"
   },
   "devDependencies": {
     "babel-plugin-transform-es2015-modules-commonjs": "*",
