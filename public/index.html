@@ -3,22 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Fluctus Experiment</title>
-  <style>
-    body, html {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-  </style>
+  <link rel="stylesheet" href="/styles/main.css" media="screen" title="main" charset="utf-8">
 </head>
 <body>
-  <div class="splash">
-    <div class="start">
-      yolo
-    </div>
+  <div class="main">
+      <svg class="button start" viewBox="0 0 100 100" width="184" height="184">
+        <circle class="circle--first" cx="50" cy="50" r="45" stroke="#ed6eb2" stroke-width="1" fill="none" stroke-dasharray="470" stroke-dashoffset="0" ></circle>
+        <circle class="circle--second" cx="50" cy="50" r="49" stroke="#324874" stroke-width="1" fill="none" stroke-dasharray="470" stroke-dashoffset="0" transform="scale(-1, 1) translate(-100, 0)"></circle>
+        <text x="28" y="52"
+              font-family="Brandon Grotesque"
+              font-size="10"
+              fill="#324874"
+              textLength="45">START</text>
+        <rect x="55" y="20" width="45" height="5" fill="#ed6eb2">
+    </svg>
+
+    <div class="title"><span class="title__content">Fluct<b>us</b></span></div>
+
+    <div class="twitter"><a href="https://twitter.com/xvi_jojo" target="blank">Twitter</a></div>
+
+    <div class="credits">Veens - Girl</div>
+
   </div>
+
+  <!-- <canvas id="canvas"></canvas> -->
+
   <script src="./build/main.js"></script>
 </body>
 </html>
