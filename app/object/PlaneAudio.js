@@ -77,6 +77,7 @@ export default class Plane extends THREE.Object3D {
    });
 
 
+    this.lastCall = 0;
 
     this.add(this.mesh);
   }
@@ -93,7 +94,9 @@ export default class Plane extends THREE.Object3D {
         });
   }
   toogleWireframe() {
-    this.mesh.material.wireframe = !this.mesh.material.wireframe 
+    if(Date.now()- this.lastCall<200) return;
+    this.lastCall = Date.now();
+    this.mesh.material.wireframe = !this.mesh.material.wireframe
   }
 
 

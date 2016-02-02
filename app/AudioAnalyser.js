@@ -77,15 +77,14 @@ export default class AudioAnalyser extends Emitter {
   getData() {
      this._analyser.getByteFrequencyData( this._dataFreqArray );
      let _volume = 0;
-      let _acuteAverage = 0;
+    let _acuteAverage = 0;
      for (var i = 0; i < this._dataFreqArray.length; i++) {
        _volume += this._dataFreqArray[i];
-
-        if(i> 174 - 5) {
+       if(i> 174 - 5) {
           _acuteAverage += this._dataFreqArray[i];
         }
-
      }
+
      let volume = _volume/this._dataFreqArray.length;
      return {
       acuteAverage:_acuteAverage/(255*4),
