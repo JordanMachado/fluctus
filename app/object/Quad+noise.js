@@ -57,16 +57,19 @@ export default class HeightMap extends THREE.Object3D {
           this.uniforms.repeat.value = this.repeat;
         });
 
-        folder.add(this,'timeScale').min(.01).max(.5)
+        folder.add(this,'timeScale').min(0.01).max(0.5)
           .listen()
           .onFinishChange(()=>{
             this.uniforms.timeScale.value = this.timeScale;
           });
   }
   updateTimeScale(timeScale) {
-    this.timeScale = timeScale;
-    this.uniforms.timeScale.value = timeScale;
-
+    TweenLite.to(this,2,{
+      timeScale:timeScale,
+      onUpdate:()=> {
+        this.uniforms.timeScale.value = timeScale;
+      }
+    })
   }
   update() {
     this.uniforms.time.value = 0.0025*(Date.now() - this.startTime);

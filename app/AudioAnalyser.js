@@ -7,6 +7,10 @@ export default class AudioAnalyser extends Emitter {
     // console.log(bufferSize);
     this.player = document.createElement('audio');
     this.player.id = 'audio-player';
+    this.player.addEventListener('ended',()=> {
+      console.log('ended');
+      this.emit('ended')
+    })
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     this._context = new AudioContext();
     this._bufferSize = bufferSize;
@@ -50,9 +54,6 @@ export default class AudioAnalyser extends Emitter {
       // this._source.connect(gainNode);
       // gainNode.connect(this._context.destination);
 
-
-
-      console.log('loaded');
     }, () => {
       console.log( "error" )
     } )
@@ -61,7 +62,7 @@ export default class AudioAnalyser extends Emitter {
     this.player.volume = 0;
     this.player.play();
     this.ready = true;
-    
+
     TweenLite.to(this.player,2.5,{
       volume:1
     })

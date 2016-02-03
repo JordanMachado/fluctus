@@ -19,6 +19,11 @@ const glslify = require('glslify');
 export default class Webgl {
   constructor(width, height, canvas) {
 
+    this.params = {
+      name:"Fluctus",
+      usePostprocessing: true
+    }
+
     this.mouse ={
       x:0,
       y:0
@@ -29,7 +34,9 @@ export default class Webgl {
     this.camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000000);
     this.camera.position.z = 220;
 
-    this.renderer = new THREE.WebGLRenderer(canvas);
+    this.renderer = new THREE.WebGLRenderer({
+      canvas:canvas
+    });
     this.renderer.setSize(width, height);
     this.renderer.setClearColor(0xe7e0ff);
     this.renderer.shadowMap.enabled = true;
@@ -37,7 +44,7 @@ export default class Webgl {
 
     this.composer = null;
 
-    this.initGui();
+    // this.initGui();
     this.initPostprocessing();
     this.createAudioTexture();
     this.addObjects(width,height);
@@ -73,11 +80,11 @@ export default class Webgl {
   	this.rtTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBFormat } );
 
     this.quadNoise = new QuadNoise();
-    this.quadNoise.addGUI(this.folder);
+    // this.quadNoise.addGUI(this.folder);
     this.sceneRt.add( this.quadNoise );
 
     this.planeAudio = new PlaneAudio(this.rtTexture, this.textureData);
-    this.planeAudio.addGUI(this.folder);
+    // this.planeAudio.addGUI(this.folder);
     this.scene.add(this.planeAudio);
 
     this.plane = new Plane();
@@ -94,11 +101,6 @@ export default class Webgl {
 
   initGui() {
 
-    this.params = {
-      name:"Fluctus",
-      usePostprocessing: true
-    }
-
     this.folder = window.gui.addFolder(this.params.name);
     this.folder.open();
 
@@ -112,15 +114,15 @@ export default class Webgl {
     this.vignettePass = new VignettePass();
     this.vignettePass.params.boost = 1.2;
     this.vignettePass.params.reduction = 0.26;
-    this.folder.add(this.vignettePass.params,'boost').min(0.01).max(2.5)
-    this.folder.add(this.vignettePass.params,'reduction').min(0.01).max(2.5)
+    // this.folder.add(this.vignettePass.params,'boost').min(0.01).max(2.5)
+    // this.folder.add(this.vignettePass.params,'reduction').min(0.01).max(2.5)
 
     this.displacementPass = new DisplacementPass();
     this.displacementPass.params.amount = 0.0099;
 
     this.lutPass = new LutPass();
 
-    this.folder.add(this.displacementPass.params,'amount').min(0.001).max(0.05)
+    // this.folder.add(this.displacementPass.params,'amount').min(0.001).max(0.05)
 
     var loader = new THREE.TextureLoader();
 

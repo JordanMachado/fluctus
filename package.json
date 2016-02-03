@@ -17,6 +17,7 @@
   "dependencies": {
     "@superguigui/wagner": "^0.1.15",
     "dat-gui": "*",
+    "domready": "^1.0.8",
     "event-emitter": "^0.3.4",
     "glsl-noise": "0.0.0",
     "glslify": "^5.0.2",
@@ -25,13 +26,16 @@
     "three": "^0.73.2"
   },
   "devDependencies": {
+    "aliasify": "^1.9.0",
     "babel-plugin-transform-es2015-modules-commonjs": "*",
     "babel-preset-es2015": "*",
     "babelify": "*",
-    "browserify": "*",
+    "browserify": "^13.0.0",
     "budo": "*",
     "glslify": "*",
+    "stringify": "^3.2.0",
     "stripify": "*",
+    "ua-device-type": "0.0.4",
     "uglifyjs": "*"
   }
 }
