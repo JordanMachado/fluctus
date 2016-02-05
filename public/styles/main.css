@@ -69,6 +69,7 @@ canvas,
 
 }
 
+html.tablet .title,
 html.phone .title {
 
   transform: translate(-50%, -50%) translate(0px, -150px);
@@ -129,6 +130,7 @@ svg {
   /*transition: transform 750ms ease-out, opacity 550ms ease-out;*/
 
 }
+.tablet svg,
 .phone svg {
   display: none;
 }
@@ -157,6 +159,7 @@ svg rect {
   display: none;
 
 }
+html.tablet .mobile-fallback,
 html.phone .mobile-fallback {
   display: block;
   position: absolute;

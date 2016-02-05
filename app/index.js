@@ -87,7 +87,7 @@ domReady(function () {
   webgl = new Webgl(window.innerWidth, window.innerHeight, document.querySelector('canvas'));
   window.addEventListener('resize', resizeHandler);
   window.addEventListener('mousemove', mouseMoveHandler);
-  if(device == 'phone') {
+  if(device == 'phone' || device == 'tablet') {
     tlIntro.play();
     webgl.quadNoise.updateTimeScale(0.1);
 
