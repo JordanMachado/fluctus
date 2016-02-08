@@ -7,17 +7,25 @@ let WAGNER = require('@superguigui/wagner')
 import QuadNoise from './object/Quad+noise';
 import PlaneAudio from './object/PlaneAudio';
 import Plane from './object/Plane';
-import AudioAnalyser from './AudioAnalyser';
+// import AudioAnalyser from './AudioAnalyser';
+
+var createPlayer = require('web-audio-player')
+var createAnalyser = require('web-audio-analyser')
+var audio = createPlayer('medias/Veens-Girl.mp3')
+
+
+
 var DisplacementPass = require('./postprocessing/displacement-pass/Displacement');
 var VignettePass = require('./postprocessing/vignette-white/VignettePass');
 var LutPass = require('@superguigui/wagner/src/passes/lookup/lookup');
+var FXAAPass = require('@superguigui/wagner/src/passes/fxaa/FXAAPASS');
 
 
 
 const glslify = require('glslify');
 
 export default class Webgl {
-  constructor(width, height, canvas) {
+  constructor(device,width, height, canvas) {
 
     this.params = {
       name:"Fluctus",
@@ -28,7 +36,9 @@ export default class Webgl {
       x:0,
       y:0
     }
-
+    this.device = device;
+    this.divisorX = (this.device === "desktop") ?5:1;
+    this.divisorY = (this.device === "desktop")?50:25;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000000);
@@ -49,23 +59,24 @@ export default class Webgl {
     this.createAudioTexture();
     this.addObjects(width,height);
 
-
-
-
   }
   createAudioTexture(){
-    let size = 16;
+    let size = 12;
     this.data = new Float32Array(size * size *3);
     this.volume = 1;
 
     for (let i = 0,  l = this.data.length; i < l; i += 3) {
-        this.data[i] =.0;
-        this.data[i+1] =.0;
-        this.data[i+2] =1.0;
+        this.data[i] =0.0;
+        this.data[i+1] =0.0;
+        this.data[i+2] =0.0;
     }
 
-    let _size = 2048
-    this.analyser = new AudioAnalyser(_size);
+    this.audio = createPlayer('medias/Veens-Girl.mp3',{
+       buffer: (this.desktop === 'desktop')?false:true
+    })
+    this.analyser = createAnalyser(this.audio.node, this.audio.context, {
+      stereo: false
+    })
 
     this.textureData = new THREE.DataTexture(this.data, size, size, THREE.RGBFormat, THREE.FloatType);
     this.textureData.minFilter = this.textureData.magFilter = THREE.NearestFilter;
@@ -120,6 +131,8 @@ export default class Webgl {
     this.displacementPass = new DisplacementPass();
     this.displacementPass.params.amount = 0.0099;
 
+    this.fxaaPass = new FXAAPass();
+
     this.lutPass = new LutPass();
 
     // this.folder.add(this.displacementPass.params,'amount').min(0.001).max(0.05)
@@ -150,8 +163,9 @@ export default class Webgl {
       this.renderer.setSize(width, height);
   }
   mousemove(x,y) {
-      this.mouse.x = (x - window.innerWidth/2) /5;
-      this.mouse.y = (y - window.innerHeight/2) /50;
+
+      this.mouse.x = (x - window.innerWidth/2) /this.divisorX;
+      this.mouse.y = (y - window.innerHeight/2) /this.divisorY;
   }
   render() {
 
@@ -163,6 +177,7 @@ export default class Webgl {
 
         this.composer.pass(this.lutPass);
         this.composer.pass(this.vignettePass);
+        this.composer.pass(this.fxaaPass);
 
         this.composer.toScreen();
 
@@ -178,19 +193,21 @@ export default class Webgl {
     this.rendererRt.render( this.sceneRt, this.cameraRt);
     this.renderer.render( this.sceneRt, this.cameraRt, this.rtTexture, true );
 
-    if(this.analyser.ready) {
-      let data = this.analyser.getData()
-      for (var i = 0; i < data.freq.length; i++) {
-          this.data[i] = data.freq[i]/256.;
+    let freq = this.analyser.frequencies();
+    let _acuteAverage = 0;
+    let _volume = 0;
+    for (var i = 0; i < freq.length; i++) {
+        this.data[i] = freq[i]/256.;
+        _volume += freq[i]/256.
+        if(i> 174 - 5) {
+           _acuteAverage += freq[i]/256.;
         }
-
-
-        if(data.acuteAverage>65) {
-          this.planeAudio.toogleWireframe();
-        }
-        this.volume = data.volume;
-        this.textureData.needsUpdate = true;
     }
+    if((_acuteAverage/4)>65)
+          this.planeAudio.toogleWireframe();
+
+    this.volume = _volume/freq.length;
+    this.textureData.needsUpdate = true;
 
     this.quadNoise.update();
     this.plane.update();

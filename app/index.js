@@ -10,10 +10,11 @@ let webgl;
 let gui;
 let device;
 
+
 const tl = new TimelineMax({
   paused: true,
   onComplete:() => {
-    webgl.quadNoise.updateTimeScale(0.1);
+    // webgl.quadNoise.updateTimeScale(0.1);
     // setTimeout(()=> {
     //   console.log('log');
     //   tl.reverse()
@@ -59,58 +60,56 @@ const tlIntro = new TimelineMax()
 .from('.circle--first', 0.45, {
   strokeDashoffset: 285,
   ease: Power1.easeInOut,
-}, '0.4')
+}, '0.9')
 .from('.circle--second', 0.45, {
   strokeDashoffset: 310,
   ease: Power1.easeInOut,
-}, '0.65')
+}, '1.15')
 .from('.button text', 0.55, {
   autoAlpha: 0,
   ease: Power1.easeInOut,
-}, '0.45')
+}, '0.95')
 .from('.button rect', 0.45, {
   scaleX: 0,
   x: '-50%',
   ease: Power1.easeInOut,
-}, '0.65')
+}, '1.15')
 .from('.title__content', 0.55, {
   x: '100%',
   scaleX: 0.5,
   autoAlpha: 0,
   ease: Power1.easeInOut,
-}, '0.65')
+}, '1.15')
 
 
 domReady(function () {
   device = deviceType(navigator.userAgent)
   document.querySelector('html').classList.add(device);
-  webgl = new Webgl(window.innerWidth, window.innerHeight, document.querySelector('canvas'));
+  webgl = new Webgl(device,window.innerWidth, window.innerHeight, document.querySelector('canvas'));
+  // window.webgl = webgl
   window.addEventListener('resize', resizeHandler);
   window.addEventListener('mousemove', mouseMoveHandler);
-  if(device == 'phone') {
-    tlIntro.play();
-    webgl.quadNoise.updateTimeScale(0.1);
+  window.addEventListener('touchmove', touchMoveHandler);
 
-  } else {
-    webgl.analyser.load('medias/Veens-Girl.mp3');
+  let startBtn = document.querySelector('.start');
+  let startBtnText = document.querySelector('.start text');
 
-    webgl.analyser.on('loaded',()=> {
-      tlIntro.play();
+  webgl.audio.once('decoding', function (amount) {
+    startBtnText.innerHTML = "LOADING"
+  })
+  webgl.audio.on('load', () => {
+    startBtnText.innerHTML = "START";
+
+    startBtn.addEventListener('click', ()=> {
+      tl.play();
+      webgl.audio.play()
+      webgl.quadNoise.updateTimeScale(0.1);
     });
-  }
+  });
 
-  webgl.analyser.on('ended',()=> {
+  webgl.audio.on('ended', () => {
     tl.reverse();
     webgl.quadNoise.updateTimeScale(0.00001);
-
-
-  });
-  let startBtn = document.querySelector('.start');
-  startBtn.addEventListener('click', ()=> {
-    console.log('start');
-    webgl.analyser.play();
-
-    tl.play();
   });
 
 
@@ -124,15 +123,14 @@ domReady(function () {
 // gui.add(webgl.params, 'usePostprocessing');
 // webgl.quadNoise.updateTimeScale(0.1);
 
-
-
-
-
 function resizeHandler() {
   webgl.resize(window.innerWidth, window.innerHeight);
 }
 function mouseMoveHandler(e) {
   webgl.mousemove(e.clientX, e.clientY);
+}
+function touchMoveHandler(e) {
+  webgl.mousemove(e.touches[0].clientX,e.touches[0].clientY);
 }
 function animate() {
   raf(animate);

@@ -129,9 +129,9 @@ svg {
   /*transition: transform 750ms ease-out, opacity 550ms ease-out;*/
 
 }
-.phone svg {
+/*.phone svg {
   display: none;
-}
+}*/
 
 svg text {
   letter-spacing: 5px;
@@ -157,7 +157,7 @@ svg rect {
   display: none;
 
 }
-html.phone .mobile-fallback {
+/*html.phone .mobile-fallback {
   display: block;
   position: absolute;
   text-align: center;
@@ -168,7 +168,7 @@ html.phone .mobile-fallback {
   font-size: 21px;
   transform: translate(-50%, -50%);
   color: #324874;
-}
+}*/
 /*
 svg:hover {
   cursor: pointer;

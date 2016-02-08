@@ -22,8 +22,11 @@
     "glsl-noise": "0.0.0",
     "glslify": "^5.0.2",
     "gsap": "*",
+    "ios-safe-audio-context": "^1.0.1",
     "raf": "*",
-    "three": "^0.73.2"
+    "three": "^0.73.2",
+    "web-audio-analyser": "^2.0.1",
+    "web-audio-player": "^1.1.1"
   },
   "devDependencies": {
     "aliasify": "^1.9.0",
