@@ -69,6 +69,7 @@ canvas,
 
 }
 
+html.tablet .title,
 html.phone .title {
 
   transform: translate(-50%, -50%) translate(0px, -150px);
@@ -129,7 +130,12 @@ svg {
   /*transition: transform 750ms ease-out, opacity 550ms ease-out;*/
 
 }
+<<<<<<< HEAD
 /*.phone svg {
+=======
+.tablet svg,
+.phone svg {
+>>>>>>> caf4a2108aa9793d151b88c6ddf774994df22ab8
   display: none;
 }*/
 
@@ -157,7 +163,11 @@ svg rect {
   display: none;
 
 }
-/*html.phone .mobile-fallback {
+
+
+/*html.tablet .mobile-fallback,
+html.phone .mobile-fallback {
+
   display: block;
   position: absolute;
   text-align: center;
@@ -169,7 +179,7 @@ svg rect {
   transform: translate(-50%, -50%);
   color: #324874;
 }*/
-/*
+
 svg:hover {
   cursor: pointer;
 }
@@ -189,4 +199,4 @@ svg:hover text {
 svg:hover + .title > .title__content {
   transform: translate(100%, 0) scaleX(0.5);
   opacity: 0;
-}*/
+}
