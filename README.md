@@ -1,7 +1,8 @@
 Fluctus
 ===================
 A little webGl experiment with audio data
-Demo available [here]((http://jojo.ninja/fluctus).
+Demo available [here](http://jojo.ninja/fluctus).
+
 ![Alt text](http://jojo.ninja/share/fluctus.png "fluctus")
 
 
